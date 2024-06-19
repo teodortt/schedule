@@ -48,10 +48,16 @@
           border: 1px solid black;
           background: rgb(255, 255, 255);
           color: black;
+          cursor: pointer;
 
           &::-webkit-calendar-picker-indicator {
             display: none;
             -webkit-appearance: none;
+          }
+
+          &:disabled {
+            background: rgb(231, 231, 231);
+            cursor: auto;
           }
         }
       }
@@ -87,5 +93,97 @@
         fill: #b3b3b3;
       }
     }
+  }
+
+  .scheduler {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    padding: 28px 0 45px 0;
+    width: 100%;
+    overflow-x: auto;
+
+    .column {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      .day {
+        padding-bottom: 15px;
+        text-align: center;
+        color: rgb(0, 0, 0);
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 22px;
+
+        .dTitle {
+          font-weight: 700;
+        }
+      }
+
+      .hoursContainer {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        gap: 12px;
+        background: rgb(244, 244, 244);
+        height: 295px;
+
+        .hours {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 160px;
+          height: 48px;
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 22px;
+          text-align: center;
+          color: rgb(225, 27, 182);
+          background: rgb(255, 255, 255);
+          border: 1px solid rgb(225, 27, 182);
+          transition: 0.3s all;
+          cursor: pointer;
+
+          &:hover {
+            color: white;
+            background: rgb(213, 109, 109);
+          }
+        }
+
+        .hrsDisabled {
+          color: rgb(172, 172, 172);
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 22px;
+          border: 1px solid rgb(172, 172, 172);
+          background: rgb(255, 255, 255);
+          cursor: auto;
+
+          &:hover {
+            color: rgb(172, 172, 172);
+            background: rgb(255, 255, 255);
+          }
+        }
+      }
+    }
+  }
+
+  .scheduler::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  .scheduler::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 99px;
+  }
+
+  .scheduler::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 99px;
   }
 }
