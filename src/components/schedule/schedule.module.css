@@ -1,0 +1,52 @@
+.container {
+  margin: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  .title {
+    color: rgb(0, 0, 0);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29px;
+    letter-spacing: 0%;
+    text-align: left;
+  }
+
+  .startEndDates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    .datePicker {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+
+      .label {
+        color: black;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 22px;
+      }
+
+      .input {
+        text-align: center;
+        width: 160px;
+        height: 48px;
+        border: 1px solid black;
+        background: rgb(255, 255, 255);
+        color: black;
+
+        &::-webkit-calendar-picker-indicator {
+          display: none;
+          -webkit-appearance: none;
+        }
+      }
+    }
+  }
+}
