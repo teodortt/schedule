@@ -2,6 +2,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 import styles from './schedule.module.css';
 import Arrow from '../../assets/arrow.svg?react';
 import classnames from 'classnames';
+import TimeSlotSelector from '../timeSlotSelector/timeSlotSelector';
 
 const today = new Date().toLocaleDateString('en-CA');
 
@@ -12,15 +13,7 @@ const Schedule = () => {
   const schedulerRef = useRef<any>();
 
   const range = dateRange > 1 ? 'days' : 'day';
-  const dayNames = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
+
   const disabledActions = !startDate || !endDate;
 
   const handleDateChange = (
@@ -107,36 +100,11 @@ const Schedule = () => {
           />
         </div>
       </div>
-      <div className={styles.scheduler} ref={schedulerRef}>
-        {Array.from({ length: dateRange }, (_, i) => i + 1).map((c, index) => {
-          const currentDate = new Date(startDate);
-          currentDate.setDate(currentDate.getDate() + index);
-
-          const day = currentDate
-            .toLocaleDateString('en-ca')
-            .replace(/-/g, '.');
-
-          return (
-            <div className={styles.column}>
-              <div className={styles.day}>
-                <div className={styles.dTitle}>
-                  {dayNames[currentDate.getDay()]}
-                </div>
-                <div>{day}</div>
-              </div>
-              <div className={styles.hoursContainer}>
-                <div
-                  className={classnames(styles.hours, {
-                    // [styles.hrsDisabled]: 'disabled',
-                  })}
-                >
-                  9:00
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <TimeSlotSelector
+        dateRange={dateRange}
+        schedulerRef={schedulerRef}
+        startDate={startDate}
+      />
 
       <div className={styles.actionButtons}>
         <button className={styles.reset} disabled={disabledActions}>
