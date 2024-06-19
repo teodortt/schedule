@@ -21,6 +21,7 @@ const Schedule = () => {
     'Friday',
     'Saturday',
   ];
+  const disabledActions = !startDate || !endDate;
 
   const handleDateChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -138,9 +139,15 @@ const Schedule = () => {
       </div>
 
       <div className={styles.actionButtons}>
-        <button className={styles.reset}>Reset</button>
-        <button className={styles.autocomplete}>Autocomplete</button>
-        <button className={styles.upload}>Upload</button>
+        <button className={styles.reset} disabled={disabledActions}>
+          Reset
+        </button>
+        <button className={styles.autocomplete} disabled={disabledActions}>
+          Autocomplete
+        </button>
+        <button className={styles.upload} disabled={disabledActions}>
+          Upload
+        </button>
       </div>
     </div>
   );
