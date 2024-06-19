@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import styles from './schedule.module.css';
 import Arrow from '../../assets/arrow.svg?react';
 import classnames from 'classnames';
@@ -9,6 +9,7 @@ const Schedule = () => {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [dateRange, setDateRange] = useState<number>(0);
+  const schedulerRef = useRef<any>();
 
   const range = dateRange > 1 ? 'days' : 'day';
   const dayNames = [
@@ -52,6 +53,10 @@ const Schedule = () => {
     event.target.showPicker();
   };
 
+  const handleScroll = (scrollOffset: number) => {
+    schedulerRef.current.scrollLeft += scrollOffset;
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>Create new Schedule</div>
@@ -88,18 +93,20 @@ const Schedule = () => {
         </div>
         <div className={styles.arrows}>
           <Arrow
+            onMouseDown={() => handleScroll(-100)}
             className={classnames(styles.arrowLeft, {
               [styles.disabled]: 'isFirst',
             })}
           />
           <Arrow
+            onMouseDown={() => handleScroll(100)}
             className={classnames(styles.arrowRight, {
               [styles.disabled]: 'isLast',
             })}
           />
         </div>
       </div>
-      <div className={styles.scheduler}>
+      <div className={styles.scheduler} ref={schedulerRef}>
         {Array.from({ length: dateRange }, (_, i) => i + 1).map((c, index) => {
           const currentDate = new Date(startDate);
           currentDate.setDate(currentDate.getDate() + index);
@@ -128,6 +135,12 @@ const Schedule = () => {
             </div>
           );
         })}
+      </div>
+
+      <div className={styles.actionButtons}>
+        <button className={styles.reset}>Reset</button>
+        <button className={styles.autocomplete}>Autocomplete</button>
+        <button className={styles.upload}>Upload</button>
       </div>
     </div>
   );
