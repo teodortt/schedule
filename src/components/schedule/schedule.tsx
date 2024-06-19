@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import styles from './schedule.module.css';
+import Arrow from '../../assets/arrow.svg?react';
+import classnames from 'classnames';
 
 const Schedule = () => {
   const [startDate, setStartDate] = useState<string>('');
@@ -42,33 +44,47 @@ const Schedule = () => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>Create new Schedule</div>
-      <div className={styles.startEndDates}>
-        <div className={styles.datePicker}>
-          <div className={styles.label}>Start-Date</div>
-          <input
-            type='date'
-            value={startDate}
-            max={endDate}
-            onClick={handleOpenPicker}
-            onChange={(e) => handleDateChange(e)}
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.datePicker}>
-          <div className={styles.label}>End-Date</div>
-          <input
-            type='date'
-            value={endDate}
-            min={startDate}
-            onClick={handleOpenPicker}
-            onChange={(e) => handleDateChange(e, true)}
-            className={styles.input}
-          />
-        </div>
+      <div className={styles.pickers}>
+        <div className={styles.startEndDates}>
+          <div className={styles.datePicker}>
+            <div className={styles.label}>Start-Date</div>
+            <input
+              type='date'
+              value={startDate}
+              max={endDate}
+              onClick={handleOpenPicker}
+              onChange={(e) => handleDateChange(e)}
+              className={styles.input}
+            />
+          </div>
+          <div className={styles.datePicker}>
+            <div className={styles.label}>End-Date</div>
+            <input
+              type='date'
+              value={endDate}
+              min={startDate}
+              onClick={handleOpenPicker}
+              onChange={(e) => handleDateChange(e, true)}
+              className={styles.input}
+            />
+          </div>
 
-        {dateRange !== 0 && (
-          <div className={styles.range}>{`${dateRange} ${range}`}</div>
-        )}
+          {dateRange !== 0 && (
+            <div className={styles.range}>{`${dateRange} ${range}`}</div>
+          )}
+        </div>
+        <div className={styles.arrows}>
+          <Arrow
+            className={classnames(styles.arrowLeft, {
+              [styles.disabled]: 'isFirst',
+            })}
+          />
+          <Arrow
+            className={classnames(styles.arrowRight, {
+              [styles.disabled]: 'isLast',
+            })}
+          />
+        </div>
       </div>
     </div>
   );
