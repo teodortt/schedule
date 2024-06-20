@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './timeSlotSelector.module.css';
 import classnames from 'classnames';
+import Delete from '../../assets/delete.svg?react';
 
 interface TimeSlotSelectorProps {
   schedulerRef: any;
@@ -18,34 +19,37 @@ const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
     console.log('UPDATED');
   }, [dateRange]);
 
+  const possibleTimes = ['9:00', '12:00', '16:00', '20:00'];
+
   return (
     <div className={styles.scheduler} ref={schedulerRef}>
       {dateTimes.map((c, index) => {
         const { date, day, times } = c;
 
         const handleAddTime = () => {
+          if (times.length < 4) {
+            const newTime = possibleTimes[times.length];
+            const updated = dateTimes.map((d) => {
+              if (d.date === date) {
+                return { ...d, times: [...times, newTime] };
+              }
+              return d;
+            });
+            setDateTimes(updated);
+          }
+        };
+
+        const handleRemoveTime = (timeToRemove: string) => {
           const updated = dateTimes.map((d) => {
-            if (d.date === date && times.length < 4) {
-              return { ...d, times: [...times, ''] };
+            if (d.date === date) {
+              return {
+                ...d,
+                times: times.filter((time) => time !== timeToRemove),
+              };
             }
             return d;
           });
           setDateTimes(updated);
-        };
-
-        const getRelatedTime = () => {
-          switch (times.length) {
-            case 0:
-              return '9:00';
-            case 1:
-              return '12:00';
-            case 2:
-              return '16:00';
-            case 3:
-              return '20:00';
-            default:
-              return;
-          }
         };
 
         const onColumnHover = () => {
@@ -66,22 +70,23 @@ const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
               onMouseEnter={onColumnHover}
               onMouseLeave={onColumnHoverOut}
             >
-              {Array.from({ length: times.length + 1 }, (_, i) => i + 1).map(
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                (_, index) => {
-                  return (
-                    <div
-                      className={classnames(styles.hours, {
-                        // [styles.hrsDisabled]: 'disabled',
-                      })}
-                    >
-                      {getRelatedTime()}
-                    </div>
-                  );
-                }
-              )}
+              {times.map((time) => {
+                return (
+                  <div
+                    className={classnames(styles.hours, {
+                      // [styles.hrsDisabled]: 'disabled',
+                    })}
+                  >
+                    {time}
+                    <Delete
+                      onClick={() => handleRemoveTime(time)}
+                      className={styles.deleteBtn}
+                    />
+                  </div>
+                );
+              })}
 
-              {isColumnHovered === index && (
+              {times.length < 4 && isColumnHovered === index && (
                 <div
                   onClick={handleAddTime}
                   className={classnames(styles.hours, styles.addTime)}

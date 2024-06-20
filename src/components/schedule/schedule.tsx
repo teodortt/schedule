@@ -101,10 +101,13 @@ const Schedule = () => {
           />
         </div>
       </div>
-      <TimeSlotSelector
-        dateRange={getDatesAndDays(dateRange, startDate)}
-        schedulerRef={schedulerRef}
-      />
+
+      {dateRange !== 0 && (
+        <TimeSlotSelector
+          dateRange={getDatesAndDays(dateRange, startDate)}
+          schedulerRef={schedulerRef}
+        />
+      )}
 
       <div className={styles.actionButtons}>
         <button className={styles.reset} disabled={disabledActions}>

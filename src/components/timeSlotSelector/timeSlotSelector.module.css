@@ -35,12 +35,14 @@
       gap: 12px;
       background: rgb(244, 244, 244);
       height: 295px;
+      width: 162px;
 
       &:hover {
         background: rgb(216, 216, 216);
       }
 
       .hours {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -59,7 +61,18 @@
         &:hover {
           color: white;
           background: rgb(213, 109, 109);
+
+          .deleteBtn {
+            display: block;
+          }
         }
+      }
+
+      .deleteBtn {
+        display: none;
+        position: absolute;
+        top: 8px;
+        right: 5px;
       }
 
       .addTime {
