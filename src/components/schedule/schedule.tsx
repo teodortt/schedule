@@ -90,13 +90,13 @@ const Schedule = () => {
           <Arrow
             onMouseDown={() => handleScroll(-1212)}
             className={classnames(styles.arrowLeft, {
-              [styles.disabled]: 'isFirst',
+              [styles.disabled]: false,
             })}
           />
           <Arrow
             onMouseDown={() => handleScroll(1212)}
             className={classnames(styles.arrowRight, {
-              [styles.disabled]: 'isLast',
+              [styles.disabled]: false,
             })}
           />
         </div>
