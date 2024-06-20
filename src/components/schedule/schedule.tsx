@@ -3,6 +3,7 @@ import styles from './schedule.module.css';
 import Arrow from '../../assets/arrow.svg?react';
 import classnames from 'classnames';
 import TimeSlotSelector from '../timeSlotSelector/timeSlotSelector';
+import { getDatesAndDays } from '../utils';
 
 const today = new Date().toLocaleDateString('en-CA');
 
@@ -101,9 +102,8 @@ const Schedule = () => {
         </div>
       </div>
       <TimeSlotSelector
-        dateRange={dateRange}
+        dateRange={getDatesAndDays(dateRange, startDate)}
         schedulerRef={schedulerRef}
-        startDate={startDate}
       />
 
       <div className={styles.actionButtons}>

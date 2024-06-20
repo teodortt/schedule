@@ -4,31 +4,19 @@ import classnames from 'classnames';
 
 interface TimeSlotSelectorProps {
   schedulerRef: any;
-  dateRange: number;
-  startDate: string;
+  dateRange: { day: string; date: string; times: string[] }[];
 }
 
-const dayNames = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
-
 const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
-  const { schedulerRef, dateRange, startDate } = props;
+  const { schedulerRef, dateRange } = props;
+
+  //   const [dateTimes, setDateTimes] = useState([{}]);
   const [isColumnHovered, setIsColumnHovered] = useState(-1);
 
   return (
     <div className={styles.scheduler} ref={schedulerRef}>
-      {Array.from({ length: dateRange }, (_, i) => i + 1).map((c, index) => {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(currentDate.getDate() + index);
-
-        const day = currentDate.toLocaleDateString('en-ca').replace(/-/g, '.');
+      {dateRange.map((c, index) => {
+        const { date, day } = c;
 
         const onColumnHover = () => {
           setIsColumnHovered(index);
@@ -38,12 +26,10 @@ const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
         };
 
         return (
-          <div className={styles.column} key={c}>
+          <div className={styles.column} key={date}>
             <div className={styles.day}>
-              <div className={styles.dTitle}>
-                {dayNames[currentDate.getDay()]}
-              </div>
-              <div>{day}</div>
+              <div className={styles.dTitle}>{day}</div>
+              <div>{date}</div>
             </div>
             <div
               className={styles.hoursContainer}
