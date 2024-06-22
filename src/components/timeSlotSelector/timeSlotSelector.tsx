@@ -16,8 +16,16 @@ const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
   const [isColumnHovered, setIsColumnHovered] = useState(-1);
 
   useEffect(() => {
-    setDateTimes(dateRange);
-    console.log('UPDATED');
+    const withExistingTimes = dateRange.map((d) => {
+      const matchingDate = dateTimes.find((dt) => dt.date === d.date);
+      if (matchingDate && matchingDate.times.length > 0) {
+        return { ...d, times: matchingDate.times };
+      }
+      return d;
+    });
+
+    setDateTimes(withExistingTimes);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateRange]);
 
   const possibleTimes = ['9:00', '12:00', '16:00', '20:00'];
@@ -76,6 +84,7 @@ const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
               {times.map((time) => {
                 return (
                   <div
+                    key={time}
                     className={classnames(styles.hours, {
                       // [styles.hrsDisabled]: 'disabled',
                     })}

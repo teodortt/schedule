@@ -21,13 +21,24 @@ const Schedule = () => {
     e: ChangeEvent<HTMLInputElement>,
     isEndDate?: boolean
   ) => {
-    const date = new Date(e.target.value).toLocaleDateString('en-CA');
+    const date = new Date(e.target.value);
+    const dateStr = date.toLocaleDateString('en-CA');
+
     if (isEndDate) {
-      setEndDate(date);
-      calculateRange(startDate, date);
+      setEndDate(dateStr);
+      calculateRange(startDate, dateStr);
     } else {
-      setStartDate(date);
-      calculateRange(date, endDate);
+      if (endDate) {
+        const calcEndDate = new Date(endDate);
+        calcEndDate.setDate(date.getDate() + (dateRange - 1));
+        const endDateStr = calcEndDate.toLocaleDateString('en-CA');
+        setStartDate(dateStr);
+        setEndDate(endDateStr);
+        calculateRange(dateStr, endDateStr);
+      } else {
+        setStartDate(dateStr);
+        calculateRange(dateStr, endDate);
+      }
     }
   };
 
@@ -102,12 +113,10 @@ const Schedule = () => {
         </div>
       </div>
 
-      {dateRange !== 0 && (
-        <TimeSlotSelector
-          dateRange={getDatesAndDays(dateRange, startDate)}
-          schedulerRef={schedulerRef}
-        />
-      )}
+      <TimeSlotSelector
+        dateRange={getDatesAndDays(dateRange, startDate)}
+        schedulerRef={schedulerRef}
+      />
 
       <div className={styles.actionButtons}>
         <button className={styles.reset} disabled={disabledActions}>
