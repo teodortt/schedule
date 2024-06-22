@@ -135,7 +135,11 @@ const Schedule = () => {
       />
 
       <div className={styles.actionButtons}>
-        <button className={styles.reset} disabled={disabledActions}>
+        <button
+          onClick={() => setDateTimes([])}
+          className={styles.reset}
+          disabled={dateTimes.every((d) => !d.times.length)}
+        >
           Reset
         </button>
         <button className={styles.autocomplete} disabled={disabledActions}>
