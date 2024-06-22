@@ -2,16 +2,17 @@ import { useEffect, useState } from 'react';
 import styles from './timeSlotSelector.module.css';
 import classnames from 'classnames';
 import Delete from '../../assets/delete.svg?react';
+import { DateRangeProps } from '../types';
 
 interface TimeSlotSelectorProps {
   schedulerRef: any;
-  dateRange: { day: string; date: string; times: string[] }[];
+  dateRange: DateRangeProps[];
 }
 
 const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
   const { schedulerRef, dateRange } = props;
 
-  const [dateTimes, setDateTimes] = useState(dateRange);
+  const [dateTimes, setDateTimes] = useState<DateRangeProps[]>([]);
   const [isColumnHovered, setIsColumnHovered] = useState(-1);
 
   useEffect(() => {
@@ -28,7 +29,9 @@ const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
 
         const handleAddTime = () => {
           if (times.length < 4) {
-            const newTime = possibleTimes[times.length];
+            const newTime =
+              possibleTimes.find((time) => !times.includes(time)) || '';
+
             const updated = dateTimes.map((d) => {
               if (d.date === date) {
                 return { ...d, times: [...times, newTime] };

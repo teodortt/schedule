@@ -1,4 +1,9 @@
-export const getDatesAndDays = (dateRange: number, startDate: string) =>
+import { DateRangeProps } from './types';
+
+export const getDatesAndDays = (
+  dateRange: number,
+  startDate: string
+): DateRangeProps[] =>
   Array.from({ length: dateRange }, (_, i) => i + 1).map((_, index) => {
     const currentDate = new Date(startDate);
     currentDate.setDate(currentDate.getDate() + index);
