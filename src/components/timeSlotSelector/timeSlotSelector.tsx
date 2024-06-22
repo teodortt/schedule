@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './timeSlotSelector.module.css';
 import classnames from 'classnames';
 import Delete from '../../assets/delete.svg?react';
@@ -6,27 +6,14 @@ import { DateRangeProps } from '../types';
 
 interface TimeSlotSelectorProps {
   schedulerRef: any;
-  dateRange: DateRangeProps[];
+  dateTimes: DateRangeProps[];
+  setDateTimes: (range: DateRangeProps[]) => void;
 }
 
 const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
-  const { schedulerRef, dateRange } = props;
+  const { schedulerRef, dateTimes, setDateTimes } = props;
 
-  const [dateTimes, setDateTimes] = useState<DateRangeProps[]>([]);
   const [isColumnHovered, setIsColumnHovered] = useState(-1);
-
-  useEffect(() => {
-    const withExistingTimes = dateRange.map((d) => {
-      const matchingDate = dateTimes.find((dt) => dt.date === d.date);
-      if (matchingDate && matchingDate.times.length > 0) {
-        return { ...d, times: matchingDate.times };
-      }
-      return d;
-    });
-
-    setDateTimes(withExistingTimes);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateRange]);
 
   const possibleTimes = ['9:00', '12:00', '16:00', '20:00'];
 

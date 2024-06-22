@@ -1,9 +1,10 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styles from './schedule.module.css';
 import Arrow from '../../assets/arrow.svg?react';
 import classnames from 'classnames';
 import TimeSlotSelector from '../timeSlotSelector/timeSlotSelector';
 import { getDatesAndDays } from '../utils';
+import { DateRangeProps } from '../types';
 
 const today = new Date().toLocaleDateString('en-CA');
 
@@ -11,11 +12,25 @@ const Schedule = () => {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [dateRange, setDateRange] = useState<number>(0);
+  const [dateTimes, setDateTimes] = useState<DateRangeProps[]>([]);
   const schedulerRef = useRef<any>();
 
   const range = dateRange > 1 ? 'days' : 'day';
 
   const disabledActions = !startDate || !endDate;
+
+  useEffect(() => {
+    const rangeArr = getDatesAndDays(dateRange, startDate);
+    const withExistingTimes = rangeArr.map((d) => {
+      const matchingDate = dateTimes.find((dt) => dt.date === d.date);
+      if (matchingDate && matchingDate.times.length > 0) {
+        return { ...d, times: matchingDate.times };
+      }
+      return d;
+    });
+
+    setDateTimes(withExistingTimes);
+  }, [startDate, endDate]);
 
   const handleDateChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -114,7 +129,8 @@ const Schedule = () => {
       </div>
 
       <TimeSlotSelector
-        dateRange={getDatesAndDays(dateRange, startDate)}
+        dateTimes={dateTimes}
+        setDateTimes={setDateTimes}
         schedulerRef={schedulerRef}
       />
 
