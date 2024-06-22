@@ -29,7 +29,7 @@ const Schedule = () => {
       calculateRange(startDate, dateStr);
     } else {
       if (endDate) {
-        const calcEndDate = new Date(endDate);
+        const calcEndDate = date;
         calcEndDate.setDate(date.getDate() + (dateRange - 1));
         const endDateStr = calcEndDate.toLocaleDateString('en-CA');
         setStartDate(dateStr);
