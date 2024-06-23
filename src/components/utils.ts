@@ -54,10 +54,9 @@ const addDays = (date: string, days: number) => {
   result.setDate(result.getDate() + days);
   return result.toLocaleDateString('en-ca').replace(/-/g, '.');
 };
-
 export const isIncrementing = (arr: string[]) => {
   for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] >= arr[i + 1]) {
+    if (parseFloat(arr[i]) >= parseFloat(arr[i + 1])) {
       return false;
     }
   }

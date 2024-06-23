@@ -29,7 +29,7 @@ const Schedule = () => {
   const disabledUpload =
     dateTimes.length === 0 ||
     dateTimes.some((t) => !t.times.length) ||
-    areAllIncrementing;
+    !areAllIncrementing;
 
   const visualizedSlots = templateShown
     ? replicateDaysWithTimes(dateTimes, dateRange)
@@ -156,7 +156,7 @@ const Schedule = () => {
         </div>
       </div>
 
-      {areDuplicated && areAllIncrementing && (
+      {areDuplicated && !areAllIncrementing && (
         <div style={{ color: 'red' }}>Some time slots are not arranged!</div>
       )}
 
