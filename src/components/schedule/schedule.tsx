@@ -3,7 +3,7 @@ import styles from './schedule.module.css';
 import Arrow from '../../assets/arrow.svg?react';
 import classnames from 'classnames';
 import TimeSlotSelector from '../timeSlotSelector/timeSlotSelector';
-import { getDatesAndDays } from '../utils';
+import { getDatesAndDays, replicateDaysWithTimes } from '../utils';
 import { DateRangeProps } from '../types';
 
 const today = new Date().toLocaleDateString('en-CA');
@@ -14,10 +14,10 @@ const Schedule = () => {
   const [dateRange, setDateRange] = useState<number>(0);
   const [dateTimes, setDateTimes] = useState<DateRangeProps[]>([]);
   const schedulerRef = useRef<any>();
+  const [areDuplicated, setAreDuplicated] = useState(false);
 
   const range = dateRange > 1 ? 'days' : 'day';
-
-  const disabledActions = !startDate || !endDate;
+  const disabledUpload = dateTimes.some((t) => !t.times.length);
 
   useEffect(() => {
     const rangeArr = getDatesAndDays(dateRange, startDate);
@@ -78,6 +78,18 @@ const Schedule = () => {
     schedulerRef.current.scrollLeft += scrollOffset;
   };
 
+  const handleReset = () => {
+    setDateTimes([]);
+    setAreDuplicated(false);
+  };
+
+  const handleCopyTemplate = () => {
+    const replicatedDays = replicateDaysWithTimes(dateTimes, dateRange);
+
+    setDateTimes(replicatedDays);
+    setAreDuplicated(true);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>Create new Schedule</div>
@@ -136,16 +148,20 @@ const Schedule = () => {
 
       <div className={styles.actionButtons}>
         <button
-          onClick={() => setDateTimes([])}
+          onClick={handleReset}
           className={styles.reset}
           disabled={dateTimes.every((d) => !d.times.length)}
         >
           Reset
         </button>
-        <button className={styles.autocomplete} disabled={disabledActions}>
+        <button
+          onClick={handleCopyTemplate}
+          className={styles.autocomplete}
+          disabled={!areDuplicated}
+        >
           Autocomplete
         </button>
-        <button className={styles.upload} disabled={disabledActions}>
+        <button className={styles.upload} disabled={disabledUpload}>
           Upload
         </button>
       </div>
