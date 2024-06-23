@@ -17,7 +17,10 @@ const Schedule = () => {
   const [areDuplicated, setAreDuplicated] = useState(false);
 
   const range = dateRange > 1 ? 'days' : 'day';
-  const disabledUpload = dateTimes.some((t) => !t.times.length);
+  const disabledAutoComplete =
+    dateTimes.every((t) => !t.times.length) || dateRange <= 7 || areDuplicated;
+  const disabledUpload =
+    dateTimes.length === 0 || dateTimes.some((t) => !t.times.length);
 
   useEffect(() => {
     const rangeArr = getDatesAndDays(dateRange, startDate);
@@ -157,7 +160,7 @@ const Schedule = () => {
         <button
           onClick={handleCopyTemplate}
           className={styles.autocomplete}
-          disabled={!areDuplicated}
+          disabled={disabledAutoComplete}
         >
           Autocomplete
         </button>
