@@ -15,12 +15,16 @@ const Schedule = () => {
   const [dateTimes, setDateTimes] = useState<DateRangeProps[]>([]);
   const schedulerRef = useRef<any>();
   const [areDuplicated, setAreDuplicated] = useState(false);
+  const [templateShown, setTemplateShown] = useState(false);
 
   const range = dateRange > 1 ? 'days' : 'day';
   const disabledAutoComplete =
     dateTimes.every((t) => !t.times.length) || dateRange <= 7 || areDuplicated;
   const disabledUpload =
     dateTimes.length === 0 || dateTimes.some((t) => !t.times.length);
+  const visualizedSlots = templateShown
+    ? replicateDaysWithTimes(dateTimes, dateRange)
+    : dateTimes;
 
   useEffect(() => {
     const rangeArr = getDatesAndDays(dateRange, startDate);
@@ -144,7 +148,7 @@ const Schedule = () => {
       </div>
 
       <TimeSlotSelector
-        dateTimes={dateTimes}
+        dateTimes={visualizedSlots}
         setDateTimes={setDateTimes}
         schedulerRef={schedulerRef}
       />
@@ -159,6 +163,8 @@ const Schedule = () => {
         </button>
         <button
           onClick={handleCopyTemplate}
+          onMouseEnter={() => setTemplateShown(true)}
+          onMouseLeave={() => setTemplateShown(false)}
           className={styles.autocomplete}
           disabled={disabledAutoComplete}
         >

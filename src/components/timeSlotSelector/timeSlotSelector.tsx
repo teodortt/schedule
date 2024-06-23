@@ -16,11 +16,18 @@ const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
   const [isColumnHovered, setIsColumnHovered] = useState(-1);
 
   const possibleTimes = ['9:00', '12:00', '16:00', '20:00'];
+  const isReplicated = dateTimes.some((d) => d.original);
 
   return (
     <div className={styles.scheduler} ref={schedulerRef}>
       {dateTimes.map((c, index) => {
-        const { date, day, times } = c;
+        const { date, day, times, original, replicationCycle } = c;
+
+        const isSameCycle =
+          index > 0 &&
+          !original &&
+          dateTimes[index - 1].replicationCycle === replicationCycle;
+        const isDisabled = isReplicated && !original;
 
         const handleAddTime = () => {
           if (times.length < 4) {
@@ -73,7 +80,7 @@ const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
                   <div
                     key={time}
                     className={classnames(styles.hours, {
-                      // [styles.hrsDisabled]: 'disabled',
+                      [styles.hrsDisabled]: isDisabled,
                     })}
                   >
                     {time}
@@ -84,7 +91,6 @@ const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
                   </div>
                 );
               })}
-
               {times.length < 4 && isColumnHovered === index && (
                 <div
                   onClick={handleAddTime}
@@ -94,6 +100,15 @@ const TimeSlotSelector = (props: TimeSlotSelectorProps) => {
                 </div>
               )}
             </div>
+            {isReplicated && (
+              <>
+                {isDisabled ? (
+                  <div className={styles.variant}>{!isSameCycle && 'Copy'}</div>
+                ) : (
+                  <div className={styles.variant}>{'Template'}</div>
+                )}
+              </>
+            )}
           </div>
         );
       })}

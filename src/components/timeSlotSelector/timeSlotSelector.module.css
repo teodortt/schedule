@@ -9,6 +9,7 @@
   scroll-behavior: smooth;
 
   .column {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -112,4 +113,19 @@
 .scheduler::-webkit-scrollbar-thumb {
   background: black;
   border-radius: 99px;
+}
+
+.variant {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  width: 160px;
+  height: 22px;
+  padding-top: 5px;
+  text-align: center;
+  border-top: 3px solid rgb(255, 0, 199);
+  color: rgb(225, 27, 182);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
 }

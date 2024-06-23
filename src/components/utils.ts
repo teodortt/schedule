@@ -26,19 +26,25 @@ const dayNames = [
 export const replicateDaysWithTimes = (
   days: DateRangeProps[],
   period: number
-) => {
-  const daysWithTimes = days.filter((day) => day.times.length > 0);
-  const result = [];
+): DateRangeProps[] => {
+  const timesList = days
+    .filter((day) => day.times.length > 0)
+    .map((day) => ({ times: day.times, original: true }));
 
-  for (let i = 0; i < period; i++) {
-    const currentDayOfWeek = i % 7;
-    const dayOfWeek = dayNames[currentDayOfWeek];
-    const dayWithTimes = daysWithTimes.find((day) => day.day === dayOfWeek) || {
-      day: dayOfWeek,
-      times: [],
+  const result: DateRangeProps[] = Array.from({ length: period }, (_, i) => {
+    const currentDate = addDays(days[0].date, i);
+    const currentDay = new Date(currentDate).getDay();
+    const timesIndex = i % timesList.length;
+    const { times, original } = timesList[timesIndex];
+
+    return {
+      day: dayNames[currentDay],
+      times,
+      date: currentDate,
+      original: i < timesList.length ? original : false,
+      replicationCycle: Math.floor(i / timesList.length),
     };
-    result.push({ ...dayWithTimes, date: addDays(days[0].date, i) });
-  }
+  });
 
   return result;
 };
@@ -46,5 +52,5 @@ export const replicateDaysWithTimes = (
 const addDays = (date: string, days: number) => {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
-  return result.toISOString().split('T')[0];
+  return result.toLocaleDateString('en-ca').replace(/-/g, '.');
 };
