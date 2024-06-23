@@ -21,7 +21,7 @@ const Schedule = () => {
   const [areDuplicated, setAreDuplicated] = useState(false);
   const [templateShown, setTemplateShown] = useState(false);
 
-  const areAllIncrementing = dateTimes.some((t) => isIncrementing(t.times));
+  const areAllIncrementing = dateTimes.every((t) => isIncrementing(t.times));
 
   const range = dateRange > 1 ? 'days' : 'day';
   const disabledAutoComplete =
