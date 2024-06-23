@@ -19,7 +19,7 @@ const Schedule = () => {
 
   const range = dateRange > 1 ? 'days' : 'day';
   const disabledAutoComplete =
-    dateTimes.every((t) => !t.times.length) || dateRange <= 7 || areDuplicated;
+    dateTimes.every((t) => !t.times.length) || areDuplicated;
   const disabledUpload =
     dateTimes.length === 0 || dateTimes.some((t) => !t.times.length);
   const visualizedSlots = templateShown
