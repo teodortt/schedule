@@ -3,7 +3,11 @@ import styles from './schedule.module.css';
 import Arrow from '../../assets/arrow.svg?react';
 import classnames from 'classnames';
 import TimeSlotSelector from '../timeSlotSelector/timeSlotSelector';
-import { getDatesAndDays, replicateDaysWithTimes } from '../utils';
+import {
+  getDatesAndDays,
+  isIncrementing,
+  replicateDaysWithTimes,
+} from '../utils';
 import { DateRangeProps } from '../types';
 
 const today = new Date().toLocaleDateString('en-CA');
@@ -17,11 +21,16 @@ const Schedule = () => {
   const [areDuplicated, setAreDuplicated] = useState(false);
   const [templateShown, setTemplateShown] = useState(false);
 
+  const areAllIncrementing = dateTimes.some((t) => isIncrementing(t.times));
+
   const range = dateRange > 1 ? 'days' : 'day';
   const disabledAutoComplete =
     dateTimes.every((t) => !t.times.length) || areDuplicated;
   const disabledUpload =
-    dateTimes.length === 0 || dateTimes.some((t) => !t.times.length);
+    dateTimes.length === 0 ||
+    dateTimes.some((t) => !t.times.length) ||
+    areAllIncrementing;
+
   const visualizedSlots = templateShown
     ? replicateDaysWithTimes(dateTimes, dateRange)
     : dateTimes;
@@ -146,6 +155,10 @@ const Schedule = () => {
           />
         </div>
       </div>
+
+      {areDuplicated && areAllIncrementing && (
+        <div style={{ color: 'red' }}>Some time slots are not arranged!</div>
+      )}
 
       <TimeSlotSelector
         dateTimes={visualizedSlots}
