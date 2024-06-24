@@ -95,7 +95,12 @@ const Schedule = () => {
   };
 
   const handleReset = () => {
-    setDateTimes([]);
+    const clearedDateTimes = dateTimes.map((d) => ({
+      ...d,
+      times: [],
+      original: false,
+    }));
+    setDateTimes(clearedDateTimes);
     setAreDuplicated(false);
   };
 
@@ -104,6 +109,7 @@ const Schedule = () => {
 
     setDateTimes(replicatedDays);
     setAreDuplicated(true);
+    setTemplateShown(false);
   };
 
   return (
